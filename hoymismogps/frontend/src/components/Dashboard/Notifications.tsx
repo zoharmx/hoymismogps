@@ -14,7 +14,7 @@ interface Notification {
 
 const Notifications: React.FC = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const { alerts, vehicles } = useAppStore();
+  const { alerts } = useAppStore();
 
   // Demo notification on startup
   useEffect(() => {

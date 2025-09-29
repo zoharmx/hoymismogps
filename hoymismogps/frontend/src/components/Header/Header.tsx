@@ -1,10 +1,8 @@
 
 import React from 'react';
 import { Search, Settings, User, Moon } from 'lucide-react';
-import { useAppStore } from '../../store/useAppStore';
 
 const Header: React.FC = () => {
-  const { user, setSidebarOpen, sidebarOpen } = useAppStore();
 
   return (
     <header className="fixed top-0 left-0 right-0 h-[70px] bg-gradient-to-r from-dark-800 to-dark-700 border-b border-gray-700 flex items-center px-6 z-50 backdrop-blur-lg">

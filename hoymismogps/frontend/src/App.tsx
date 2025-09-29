@@ -1,17 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-
-interface Vehicle {
-  deviceId: string;
-  name: string;
-  status: string;
-  vehicleType: string;
-  lastKnownLocation?: {
-    latitude: number;
-    longitude: number;
-    speed: number;
-  };
-}
+import type { Vehicle } from './types';
 
 function App() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -198,7 +187,7 @@ function App() {
             </div>
           </div>
         ) : (
-          vehicles.map((vehicle, index) => (
+          vehicles.map((vehicle) => (
             <div key={vehicle.deviceId} style={cardStyle}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div style={{ flex: 1 }}>

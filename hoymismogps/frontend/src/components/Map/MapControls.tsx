@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { MapPin, Maximize, Layers, Navigation } from 'lucide-react';
+import { MapPin, Maximize, Layers } from 'lucide-react';
 
 const MapControls: React.FC = () => {
   const [showLayerSelector, setShowLayerSelector] = useState(false);
@@ -13,7 +13,7 @@ const MapControls: React.FC = () => {
     { id: 'traffic', name: '🚦 Tráfico', style: 'mapbox://styles/mapbox/navigation-day-v1' },
   ];
 
-  const handleLayerChange = (layerId: string, style: string) => {
+  const handleLayerChange = (layerId: string) => {
     setSelectedLayer(layerId);
     // TODO: Implement map style change
     setShowLayerSelector(false);
@@ -70,7 +70,7 @@ const MapControls: React.FC = () => {
                   name="layer"
                   value={layer.id}
                   checked={selectedLayer === layer.id}
-                  onChange={() => handleLayerChange(layer.id, layer.style)}
+                  onChange={() => handleLayerChange(layer.id)}
                   className="mr-3 accent-primary"
                 />
                 <span className="text-sm text-gray-300 group-hover:text-white">

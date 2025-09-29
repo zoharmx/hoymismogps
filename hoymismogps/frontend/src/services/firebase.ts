@@ -1,7 +1,7 @@
 
 // Firebase client configuration for HoyMismoGPS
 import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, User } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from 'firebase/auth';
 import { getFirestore, collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
 
 import { environment } from '../config/environment';
@@ -27,7 +27,7 @@ export const onAuthChange = (callback: (user: User | null) => void) => {
 };
 
 // Firestore real-time listeners
-export const subscribeToVehicles = (organizationId: string, callback: (vehicles: any[]) => void) => {
+export const subscribeToVehicles = (organizationId: string, callback: (vehicles: Record<string, unknown>[]) => void) => {
   const q = query(
     collection(db, 'vehicles'),
     where('organizationId', '==', organizationId)
@@ -42,7 +42,7 @@ export const subscribeToVehicles = (organizationId: string, callback: (vehicles:
   });
 };
 
-export const subscribeToAlerts = (organizationId: string, callback: (alerts: any[]) => void) => {
+export const subscribeToAlerts = (organizationId: string, callback: (alerts: Record<string, unknown>[]) => void) => {
   const q = query(
     collection(db, 'alerts'),
     where('organizationId', '==', organizationId),

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { useAppStore } from '../../store/useAppStore';
-import { Vehicle } from '../../types';
+import type { Vehicle } from '../../types';
 import MapControls from './MapControls';
 
 import { environment } from '../../config/environment';

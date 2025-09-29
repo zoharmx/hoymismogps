@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useAppStore } from '../../store/useAppStore';
-import { MapPin, Gauge, Compass, Signal, Mountain, Battery } from 'lucide-react';
+import { MapPin, Gauge, Compass, Signal, Mountain } from 'lucide-react';
 
 const InfoPanel: React.FC = () => {
   const { selectedVehicle } = useAppStore();

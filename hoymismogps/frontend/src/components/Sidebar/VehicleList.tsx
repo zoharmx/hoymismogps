@@ -2,7 +2,7 @@
 import React, { useMemo } from 'react';
 import { Truck, Car, Bike, MapPin, Zap, Clock } from 'lucide-react';
 import { useAppStore } from '../../store/useAppStore';
-import { Vehicle } from '../../types';
+import type { Vehicle } from '../../types';
 
 const VehicleList: React.FC = () => {
   const { vehicles, selectedVehicle, setSelectedVehicle, filters } = useAppStore();

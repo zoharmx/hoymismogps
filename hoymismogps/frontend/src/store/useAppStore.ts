@@ -1,11 +1,11 @@
 
 import { create } from 'zustand';
-import { Vehicle, Alert, DashboardStats, FilterOptions, MapViewport } from '../types';
+import type { Vehicle, Alert, DashboardStats, FilterOptions, MapViewport, GPSLocation } from '../types';
 
 interface AppState {
   // Authentication
   isAuthenticated: boolean;
-  user: any | null;
+  user: Record<string, unknown> | null;
   
   // Vehicles
   vehicles: Vehicle[];
@@ -31,10 +31,10 @@ interface AppState {
   };
   
   // Actions
-  setAuth: (isAuthenticated: boolean, user?: any) => void;
+  setAuth: (isAuthenticated: boolean, user?: Record<string, unknown>) => void;
   setVehicles: (vehicles: Vehicle[]) => void;
   setSelectedVehicle: (vehicle: Vehicle | null) => void;
-  updateVehicleLocation: (deviceId: string, location: any) => void;
+  updateVehicleLocation: (deviceId: string, location: GPSLocation) => void;
   setAlerts: (alerts: Alert[]) => void;
   markAlertAsRead: (alertId: string) => void;
   setStats: (stats: DashboardStats) => void;

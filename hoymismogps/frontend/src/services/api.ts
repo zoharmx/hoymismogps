@@ -1,6 +1,6 @@
-
-import axios, { AxiosResponse } from 'axios';
-import { Vehicle, GPSLocation, Alert, Geofence, APIResponse } from '../types';
+import axios from 'axios';
+// ERROR CORREGIDO: Se eliminó 'AxiosResponse' de la siguiente línea porque no se usaba.
+import type { Vehicle, GPSLocation, Alert, Geofence, APIResponse } from '../types';
 
 import { environment } from '../config/environment';
 
@@ -38,7 +38,7 @@ class APIService {
   }
 
   // Health check
-  async healthCheck(): Promise<any> {
+  async healthCheck(): Promise<{ status: string; timestamp: string }> {
     const response = await this.axiosInstance.get('/health');
     return response.data;
   }
@@ -54,7 +54,7 @@ class APIService {
   }
 
   // GPS tracking
-  async trackVehicle(locationData: GPSLocation): Promise<APIResponse<any>> {
+  async trackVehicle(locationData: GPSLocation): Promise<APIResponse<{ success: boolean }>> {
     const response = await this.axiosInstance.post('/api/v1/track', locationData);
     return response.data;
   }
@@ -97,16 +97,16 @@ class APIService {
   }
 
   // Simulator controls (development only)
-  async getSimulatorStatus(): Promise<any> {
+  async getSimulatorStatus(): Promise<{ running: boolean; vehicles: string[] }> {
     try {
       const response = await this.axiosInstance.get('/api/v1/simulator/status');
       return response.data;
-    } catch (error) {
+    } catch {
       return { running: false, vehicles: [] };
     }
   }
 
-  async controlSimulator(action: 'start' | 'stop'): Promise<any> {
+  async controlSimulator(action: 'start' | 'stop'): Promise<{ success: boolean; message: string }> {
     const response = await this.axiosInstance.post('/api/v1/simulator/control', { action });
     return response.data;
   }
