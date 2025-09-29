@@ -1,0 +1,292 @@
+rules_version = '2';
+
+// HoyMismoGPS - Reglas de Seguridad Firestore Multi-Tenant
+// Asegura que cada organización solo acceda a sus propios datos
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // =============================================================================
+    // FUNCIONES DE UTILIDAD Y VALIDACIÓN
+    // =============================================================================
+    
+    // Verificar si el usuario está autenticado
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Obtener el ID de la organización del usuario desde custom claims
+    function getUserOrganizationId() {
+      return request.auth.token.organizationId;
+    }
+    
+    // Verificar si el usuario pertenece a la organización del documento
+    function belongsToUserOrganization(organizationId) {
+      return isAuthenticated() && getUserOrganizationId() == organizationId;
+    }
+    
+    // Obtener el rol del usuario desde custom claims
+    function getUserRole() {
+      return request.auth.token.role;
+    }
+    
+    // Verificar si el usuario tiene un rol específico
+    function hasRole(role) {
+      return getUserRole() == role;
+    }
+    
+    // Verificar si el usuario tiene al menos uno de los roles especificados
+    function hasAnyRole(roles) {
+      return getUserRole() in roles;
+    }
+    
+    // Verificar si el usuario tiene un permiso específico
+    function hasPermission(permission) {
+      return permission in request.auth.token.permissions;
+    }
+    
+    // Validar estructura de datos para organizaciones
+    function isValidOrganization(data) {
+      return data.keys().hasAll(['name', 'email', 'subscription_plan']) &&
+             data.name is string &&
+             data.email is string &&
+             data.subscription_plan in ['basic', 'premium', 'enterprise'];
+    }
+    
+    // Validar estructura de datos para usuarios
+    function isValidUser(data) {
+      return data.keys().hasAll(['name', 'email', 'role', 'organization_id']) &&
+             data.name is string &&
+             data.email is string &&
+             data.role in ['super_admin', 'admin', 'operator', 'viewer'] &&
+             data.organization_id is string;
+    }
+    
+    // Validar estructura de datos para vehículos
+    function isValidVehicle(data) {
+      return data.keys().hasAll(['device_id', 'organization_id']) &&
+             data.device_id is string &&
+             data.organization_id is string;
+    }
+    
+    // Validar estructura de datos para geocercas
+    function isValidGeofence(data) {
+      return data.keys().hasAll(['name', 'organization_id', 'coordinates']) &&
+             data.name is string &&
+             data.organization_id is string &&
+             data.coordinates is map;
+    }
+    
+    // Verificar rate limiting básico (máximo 100 operaciones por minuto)
+    function withinRateLimit() {
+      return request.time.toMillis() > (resource == null ? 0 : resource.data.get('lastRequest', timestamp.value(2000, 1, 1)).toMillis() + 600);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA ORGANIZACIONES
+    // =============================================================================
+    
+    match /organizations/{organizationId} {
+      // Solo super_admins pueden crear organizaciones
+      allow create: if hasRole('super_admin') && isValidOrganization(request.resource.data);
+      
+      // Usuarios de la organización pueden leer sus datos
+      allow read: if belongsToUserOrganization(organizationId) || hasRole('super_admin');
+      
+      // Solo admins y super_admins pueden actualizar organizaciones
+      allow update: if (belongsToUserOrganization(organizationId) && hasAnyRole(['admin', 'super_admin'])) &&
+                       isValidOrganization(request.resource.data) &&
+                       // Prevenir cambio de ID de organización
+                       request.resource.data.id == resource.data.id;
+      
+      // Solo super_admins pueden eliminar organizaciones
+      allow delete: if hasRole('super_admin');
+    }
+    
+    // =============================================================================
+    // REGLAS PARA USUARIOS
+    // =============================================================================
+    
+    match /users/{userId} {
+      // Solo admins y super_admins pueden crear usuarios
+      allow create: if hasAnyRole(['admin', 'super_admin']) &&
+                       isValidUser(request.resource.data) &&
+                       // Asegurar que el usuario se crea en la organización correcta
+                       (hasRole('super_admin') || 
+                        request.resource.data.organization_id == getUserOrganizationId()) &&
+                       withinRateLimit();
+      
+      // Los usuarios pueden leer su propia información y admins pueden leer usuarios de su organización
+      allow read: if (isAuthenticated() && request.auth.uid == userId) ||
+                     (hasAnyRole(['admin', 'super_admin']) && 
+                      belongsToUserOrganization(resource.data.organization_id));
+      
+      // Los usuarios pueden actualizar su propio perfil (campos limitados)
+      // Los admins pueden actualizar usuarios de su organización
+      allow update: if (isAuthenticated() && request.auth.uid == userId &&
+                        // Usuarios solo pueden cambiar ciertos campos
+                        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['name', 'phone', 'lastLogin'])) ||
+                       (hasAnyRole(['admin', 'super_admin']) &&
+                        belongsToUserOrganization(resource.data.organization_id) &&
+                        isValidUser(request.resource.data) &&
+                        // Prevenir cambio de organización por admins no super_admin
+                        (hasRole('super_admin') || 
+                         request.resource.data.organization_id == resource.data.organization_id));
+      
+      // Solo admins pueden eliminar usuarios de su organización
+      allow delete: if hasAnyRole(['admin', 'super_admin']) &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA VEHÍCULOS
+    // =============================================================================
+    
+    match /vehicles/{vehicleId} {
+      // Admins y operadores pueden crear vehículos
+      allow create: if hasAnyRole(['admin', 'operator']) &&
+                       isValidVehicle(request.resource.data) &&
+                       belongsToUserOrganization(request.resource.data.organization_id) &&
+                       withinRateLimit();
+      
+      // Todos los usuarios autenticados de la organización pueden leer vehículos
+      allow read: if belongsToUserOrganization(resource.data.organization_id);
+      
+      // Admins y operadores pueden actualizar vehículos
+      allow update: if hasAnyRole(['admin', 'operator']) &&
+                       belongsToUserOrganization(resource.data.organization_id) &&
+                       isValidVehicle(request.resource.data) &&
+                       // Prevenir cambio de organización
+                       request.resource.data.organization_id == resource.data.organization_id;
+      
+      // Solo admins pueden eliminar vehículos
+      allow delete: if hasRole('admin') &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA DATOS GPS EN TIEMPO REAL
+    // =============================================================================
+    
+    match /gps_readings/{readingId} {
+      // Solo el sistema (service account) puede crear lecturas GPS
+      allow create: if request.auth.token.get('service_account', false) == true ||
+                       // Permitir dispositivos GPS autenticados
+                       (hasPermission('write_gps_data') && 
+                        belongsToUserOrganization(request.resource.data.organization_id));
+      
+      // Usuarios pueden leer lecturas GPS de su organización
+      allow read: if belongsToUserOrganization(resource.data.organization_id);
+      
+      // No se permiten actualizaciones de lecturas GPS (solo creación)
+      allow update: if false;
+      
+      // Solo admins pueden eliminar lecturas GPS (para mantenimiento)
+      allow delete: if hasRole('admin') &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA GEOCERCAS
+    // =============================================================================
+    
+    match /geofences/{geofenceId} {
+      // Admins y operadores pueden crear geocercas
+      allow create: if hasAnyRole(['admin', 'operator']) &&
+                       isValidGeofence(request.resource.data) &&
+                       belongsToUserOrganization(request.resource.data.organization_id);
+      
+      // Usuarios pueden leer geocercas de su organización
+      allow read: if belongsToUserOrganization(resource.data.organization_id);
+      
+      // Admins y operadores pueden actualizar geocercas
+      allow update: if hasAnyRole(['admin', 'operator']) &&
+                       belongsToUserOrganization(resource.data.organization_id) &&
+                       isValidGeofence(request.resource.data) &&
+                       request.resource.data.organization_id == resource.data.organization_id;
+      
+      // Admins pueden eliminar geocercas
+      allow delete: if hasRole('admin') &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA ALERTAS
+    // =============================================================================
+    
+    match /alerts/{alertId} {
+      // Solo el sistema puede crear alertas
+      allow create: if request.auth.token.get('service_account', false) == true ||
+                       hasPermission('create_alerts');
+      
+      // Usuarios pueden leer alertas de su organización
+      allow read: if belongsToUserOrganization(resource.data.organization_id);
+      
+      // Operadores y admins pueden actualizar alertas (ej: marcar como leída)
+      allow update: if hasAnyRole(['admin', 'operator']) &&
+                       belongsToUserOrganization(resource.data.organization_id) &&
+                       // Solo permitir cambios en campos específicos
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['acknowledged', 'acknowledgedBy', 'acknowledgedAt']);
+      
+      // Admins pueden eliminar alertas
+      allow delete: if hasRole('admin') &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA REPORTES Y ANALYTICS
+    // =============================================================================
+    
+    match /reports/{reportId} {
+      // Usuarios con permisos pueden crear reportes
+      allow create: if hasPermission('create_reports') &&
+                       belongsToUserOrganization(request.resource.data.organization_id);
+      
+      // Usuarios pueden leer reportes de su organización
+      allow read: if belongsToUserOrganization(resource.data.organization_id);
+      
+      // Solo el creador o admins pueden actualizar reportes
+      allow update: if (request.auth.uid == resource.data.created_by ||
+                        hasRole('admin')) &&
+                       belongsToUserOrganization(resource.data.organization_id);
+      
+      // Solo el creador o admins pueden eliminar reportes
+      allow delete: if (request.auth.uid == resource.data.created_by ||
+                        hasRole('admin')) &&
+                       belongsToUserOrganization(resource.data.organization_id);
+    }
+    
+    // =============================================================================
+    // REGLAS PARA CONFIGURACIONES DE SISTEMA
+    // =============================================================================
+    
+    match /system_config/{configId} {
+      // Solo super_admins pueden gestionar configuración del sistema
+      allow read, write: if hasRole('super_admin');
+    }
+    
+    // =============================================================================
+    // REGLAS PARA LOGS DE AUDITORÍA
+    // =============================================================================
+    
+    match /audit_logs/{logId} {
+      // Solo el sistema puede crear logs de auditoría
+      allow create: if request.auth.token.get('service_account', false) == true;
+      
+      // Solo super_admins pueden leer logs de auditoría
+      allow read: if hasRole('super_admin');
+      
+      // Los logs de auditoría no se pueden modificar o eliminar
+      allow update, delete: if false;
+    }
+    
+    // =============================================================================
+    // REGLAS DE DENEGACIÓN POR DEFECTO
+    // =============================================================================
+    
+    // Denegar acceso a cualquier otra colección no especificada
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

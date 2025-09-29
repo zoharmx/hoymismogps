@@ -1,0 +1,801 @@
+[
+  {
+    "id": "geofence_e6e7e237cbb4498b",
+    "organization_id": "demo_hoymismogps",
+    "name": "Zona Industrial Ensenada #1",
+    "description": "Geocerca de tipo industrial en Ensenada, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 31.863304945270563,
+        "lng": -116.55970402137059
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-02T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_1742872f57e4032a",
+    "organization_id": "demo_hoymismogps",
+    "name": "Centro de Negocios Dallas #2",
+    "description": "Geocerca de tipo service en Dallas, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.78967280218191,
+        "lng": -96.83671417840142
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-01T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_3fc7ecea1bdec302",
+    "organization_id": "demo_hoymismogps",
+    "name": "Almacén Principal San Diego #3",
+    "description": "Geocerca de tipo distribution en San Diego, CA",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.75084561969672,
+        "lng": -117.19444594981755
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-11-27T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_99025bce8a67ff6e",
+    "organization_id": "demo_hoymismogps",
+    "name": "Zona Restringida Matamoros #4",
+    "description": "Geocerca de tipo restricted en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.872731632543125,
+        "lng": -97.49124943427432
+      },
+      "radius_km": 0.3
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-11-08T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_0d9a929e53618946",
+    "organization_id": "demo_hoymismogps",
+    "name": "Centro de Distribución Los Ángeles #5",
+    "description": "Geocerca de tipo distribution en Los Ángeles, CA",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 34.023833455026534,
+        "lng": -118.28208000404338
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-11-09T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_eef48b4126c385e1",
+    "organization_id": "demo_hoymismogps",
+    "name": "Zona Restringida Ensenada #6",
+    "description": "Geocerca de tipo restricted en Ensenada, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 31.831612891905955,
+        "lng": -116.5771575691533
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-11-10T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_c5579cb92aa5d0d9",
+    "organization_id": "demo_hoymismogps",
+    "name": "Centro de Negocios Matamoros #7",
+    "description": "Geocerca de tipo service en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.839867831462353,
+        "lng": -97.5049054477015
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-10-03T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_6dd608d4ef546ef8",
+    "organization_id": "demo_hoymismogps",
+    "name": "Centro Industrial Los Ángeles #8",
+    "description": "Geocerca de tipo industrial en Los Ángeles, CA",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 34.05565650907901,
+        "lng": -118.19610737790526
+      },
+      "radius_km": 3.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-09T20:08:51.529107Z",
+    "active": true
+  },
+  {
+    "id": "geofence_90e5a4a8c309b0f0",
+    "organization_id": "org_002_2f74814f",
+    "name": "Almacén Principal San Nicolás #1",
+    "description": "Geocerca de tipo distribution en San Nicolás, NL",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.787010098704236,
+        "lng": -100.31497465340736
+      },
+      "radius_km": 1.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-09-20T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_0a4d121c46dfcdac",
+    "organization_id": "org_002_2f74814f",
+    "name": "Parque Industrial Dallas #2",
+    "description": "Geocerca de tipo industrial en Dallas, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.81782212160087,
+        "lng": -96.84671132469164
+      },
+      "radius_km": 5.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-09-23T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_efb52cd442ca8651",
+    "organization_id": "org_002_2f74814f",
+    "name": "Zona Industrial Matamoros #3",
+    "description": "Geocerca de tipo industrial en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.853982491663064,
+        "lng": -97.52251496991785
+      },
+      "radius_km": 3.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-27T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_20cc94bd73ef98a6",
+    "organization_id": "org_002_2f74814f",
+    "name": "Centro de Distribución Austin #4",
+    "description": "Geocerca de tipo distribution en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.239749865500638,
+        "lng": -97.734368409352
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-19T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_d182845f814d138e",
+    "organization_id": "org_002_2f74814f",
+    "name": "Parque Industrial Matamoros #5",
+    "description": "Geocerca de tipo industrial en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.895778399560122,
+        "lng": -97.4877856804259
+      },
+      "radius_km": 3.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-10-06T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_791fe7f6a854907f",
+    "organization_id": "org_002_2f74814f",
+    "name": "Área Prohibida Dallas #6",
+    "description": "Geocerca de tipo restricted en Dallas, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.81272632095735,
+        "lng": -96.7545810140655
+      },
+      "radius_km": 0.3
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-10-17T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_9406d7baa1e94dcf",
+    "organization_id": "org_002_2f74814f",
+    "name": "Área Prohibida Austin #7",
+    "description": "Geocerca de tipo restricted en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.22488004515851,
+        "lng": -97.78172784980383
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-09-27T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_348208e7705dc4b3",
+    "organization_id": "org_002_2f74814f",
+    "name": "Almacén Principal Dallas #8",
+    "description": "Geocerca de tipo distribution en Dallas, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.823422601761564,
+        "lng": -96.76125162761268
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-09-21T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_5420296d1df51481",
+    "organization_id": "org_002_2f74814f",
+    "name": "Zona de Servicio Dallas #9",
+    "description": "Geocerca de tipo service en Dallas, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.78365148636372,
+        "lng": -96.81673865659863
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-10-30T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_e3020e11dce9916f",
+    "organization_id": "org_002_2f74814f",
+    "name": "Centro de Negocios Matamoros #10",
+    "description": "Geocerca de tipo service en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.83490586315346,
+        "lng": -97.45509773699867
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-09-03T20:08:51.529141Z",
+    "active": true
+  },
+  {
+    "id": "geofence_31693355b1e7f743",
+    "organization_id": "org_003_1464e89f",
+    "name": "Zona Industrial Austin #1",
+    "description": "Geocerca de tipo industrial en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.276305519064383,
+        "lng": -97.75373845280502
+      },
+      "radius_km": 5.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-11-23T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_66a77e73798e021f",
+    "organization_id": "org_003_1464e89f",
+    "name": "Área Comercial Tucson #2",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.22344539990009,
+        "lng": -110.9571153184322
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-11-04T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_4a2c3315c2709e31",
+    "organization_id": "org_003_1464e89f",
+    "name": "Zona de Servicio Tucson #3",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.23319236821809,
+        "lng": -111.0024937152377
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-11-29T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_519dcad32b977d6d",
+    "organization_id": "org_003_1464e89f",
+    "name": "Área Prohibida Matamoros #4",
+    "description": "Geocerca de tipo restricted en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.829344467326102,
+        "lng": -97.47785218704854
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-12-24T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_3c74e6009107cf79",
+    "organization_id": "org_003_1464e89f",
+    "name": "Zona de Servicio Matamoros #5",
+    "description": "Geocerca de tipo service en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.90025405884511,
+        "lng": -97.4838780887028
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-12-07T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_4ae683b7836eaaf8",
+    "organization_id": "org_003_1464e89f",
+    "name": "Zona Restringida Matamoros #6",
+    "description": "Geocerca de tipo restricted en Matamoros, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 25.872834082895494,
+        "lng": -97.53086974406298
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": false,
+    "created_at": "2024-11-06T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_1d5f114fa6fb5aef",
+    "organization_id": "org_003_1464e89f",
+    "name": "Zona de Servicio Austin #7",
+    "description": "Geocerca de tipo service en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.30541268466322,
+        "lng": -97.7925479588895
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2024-12-30T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_28ce08f1d8489c5c",
+    "organization_id": "org_003_1464e89f",
+    "name": "Centro de Negocios Austin #8",
+    "description": "Geocerca de tipo service en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.29938239411962,
+        "lng": -97.78553719797435
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": false,
+    "created_at": "2024-12-11T20:08:51.529166Z",
+    "active": true
+  },
+  {
+    "id": "geofence_c5af694e37070952",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona de Servicio Tijuana #1",
+    "description": "Geocerca de tipo service en Tijuana, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.56335880730305,
+        "lng": -117.08646570129491
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-28T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_ab8628d619e94bc6",
+    "organization_id": "org_004_15e36098",
+    "name": "Hub Logístico Tijuana #2",
+    "description": "Geocerca de tipo distribution en Tijuana, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.497443265087846,
+        "lng": -117.07066008985107
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-26T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_8e1163d732a042dd",
+    "organization_id": "org_004_15e36098",
+    "name": "Área Prohibida Tampico #3",
+    "description": "Geocerca de tipo restricted en Tampico, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 22.26694790843139,
+        "lng": -97.83557978684138
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-04-17T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_315601c5d3e40640",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona Industrial Tampico #4",
+    "description": "Geocerca de tipo industrial en Tampico, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 22.2355024476956,
+        "lng": -97.8347008435539
+      },
+      "radius_km": 5.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-18T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_d7d3e27200da3b1f",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona de Seguridad Tucson #5",
+    "description": "Geocerca de tipo restricted en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.1915202857641,
+        "lng": -110.92518900178099
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-23T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_bf3054511b45f635",
+    "organization_id": "org_004_15e36098",
+    "name": "Área Comercial Tucson #6",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.2675223069004,
+        "lng": -110.96163287730211
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-20T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_54be6f6c8f7d388b",
+    "organization_id": "org_004_15e36098",
+    "name": "Área Comercial Tucson #7",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.18248430834906,
+        "lng": -110.95055345947358
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-06T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_28adcf230c4ba3d7",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona Restringida Tijuana #8",
+    "description": "Geocerca de tipo restricted en Tijuana, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.48175972373395,
+        "lng": -117.03055601457608
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-16T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_9fd1aeaa06891167",
+    "organization_id": "org_004_15e36098",
+    "name": "Área Comercial Tucson #9",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.27243061242974,
+        "lng": -110.99026651102231
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-30T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_8f21eafea4cb4cde",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona de Seguridad Tucson #10",
+    "description": "Geocerca de tipo restricted en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.20011050706519,
+        "lng": -110.93135910157753
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-13T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_8c92028d0d047a85",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona Industrial Austin #11",
+    "description": "Geocerca de tipo industrial en Austin, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 30.260116848648774,
+        "lng": -97.79231880711856
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-24T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_1977386635b6f032",
+    "organization_id": "org_004_15e36098",
+    "name": "Zona de Servicio Tucson #12",
+    "description": "Geocerca de tipo service en Tucson, AZ",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.18124188649269,
+        "lng": -110.94924660913227
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-13T20:08:51.529180Z",
+    "active": true
+  },
+  {
+    "id": "geofence_326a8640442b8fc3",
+    "organization_id": "org_005_6a679b52",
+    "name": "Zona Industrial Houston #1",
+    "description": "Geocerca de tipo industrial en Houston, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 29.777087567985568,
+        "lng": -95.32771739553527
+      },
+      "radius_km": 5.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-28T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_087d9136f1f5ce90",
+    "organization_id": "org_005_6a679b52",
+    "name": "Centro Industrial San Francisco #2",
+    "description": "Geocerca de tipo industrial en San Francisco, CA",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 37.750827777735296,
+        "lng": -122.37077137107755
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-03-26T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_3cb1868baa3f88ae",
+    "organization_id": "org_005_6a679b52",
+    "name": "Zona de Servicio Tampico #3",
+    "description": "Geocerca de tipo service en Tampico, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 22.229573747009823,
+        "lng": -97.8924271023756
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-29T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_c6735de1a6fd5d1c",
+    "organization_id": "org_005_6a679b52",
+    "name": "Área Prohibida San Francisco #4",
+    "description": "Geocerca de tipo restricted en San Francisco, CA",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 37.78087019274801,
+        "lng": -122.41225995924236
+      },
+      "radius_km": 0.5
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-03-24T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_9d745b30419d5b5c",
+    "organization_id": "org_005_6a679b52",
+    "name": "Hub Logístico Tampico #5",
+    "description": "Geocerca de tipo distribution en Tampico, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 22.185557873963297,
+        "lng": -97.89044549196326
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-02T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_079d761130130908",
+    "organization_id": "org_005_6a679b52",
+    "name": "Hub Logístico Mexicali #6",
+    "description": "Geocerca de tipo distribution en Mexicali, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.620659423470734,
+        "lng": -115.44249302485923
+      },
+      "radius_km": 2.0
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-05-02T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_4670365181751c92",
+    "organization_id": "org_005_6a679b52",
+    "name": "Zona Restringida Mexicali #7",
+    "description": "Geocerca de tipo restricted en Mexicali, BC",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 32.597822879713284,
+        "lng": -115.4772985638656
+      },
+      "radius_km": 0.8
+    },
+    "alerts_enabled": true,
+    "created_at": "2025-04-25T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_29a4f68f62f6700b",
+    "organization_id": "org_005_6a679b52",
+    "name": "Zona Industrial Houston #8",
+    "description": "Geocerca de tipo industrial en Houston, TX",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 29.804216126163027,
+        "lng": -95.3665540665967
+      },
+      "radius_km": 3.0
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-03-30T20:08:51.529193Z",
+    "active": true
+  },
+  {
+    "id": "geofence_89424cb230ca1206",
+    "organization_id": "org_005_6a679b52",
+    "name": "Almacén Principal Tampico #9",
+    "description": "Geocerca de tipo distribution en Tampico, Tamaulipas",
+    "type": "circle",
+    "coordinates": {
+      "center": {
+        "lat": 22.226506140395536,
+        "lng": -97.86179568714289
+      },
+      "radius_km": 1.0
+    },
+    "alerts_enabled": false,
+    "created_at": "2025-05-04T20:08:51.529193Z",
+    "active": true
+  }
+]

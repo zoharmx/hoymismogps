@@ -1,0 +1,76 @@
+INICIO DE MASTER PROMPT: PROYECTO "HoyMismoGPS"
+1. Visión del Producto y Misión Principal:
+Nuestra misión es construir "HoyMismoGPS", una plataforma SaaS de seguimiento de flotas vehiculares que se sienta instantánea, intuitiva y fiable. El objetivo no es competir en la cantidad de funcionalidades, sino en la calidad y fluidez de la experiencia principal: ver la ubicación de tus activos en un mapa en tiempo real real. El usuario final es un gerente de logística que necesita tomar decisiones rápidas basadas en información precisa y actualizada al segundo.
+2. Principios Fundamentales de Diseño y Desarrollo (No Negociables):
+El Tiempo Real es Rey: Cualquier latencia perceptible entre el movimiento del vehículo y su reflejo en el mapa es un fracaso. La arquitectura debe priorizar el flujo de datos push sobre el pull.
+La UI debe ser un "Panel de Vidrio": Claridad sobre densidad. La información debe ser inmediatamente comprensible. El usuario no debe necesitar un manual. Cada clic debe tener una respuesta instantánea.
+Seguridad por Defecto: La plataforma es multi-tenant desde el día uno. Los datos de un cliente deben ser criptográficamente y lógicamente inaccesibles para otro. Se implementará control de acceso basado en roles (RBAC).
+Arquitectura Serverless-First: Priorizaremos servicios gestionados y serverless para maximizar la escalabilidad, minimizar la gestión de infraestructura y mantener un modelo de costos de pago por uso.
+3. Stack Tecnológico Final (Decisiones Justificadas):
+Dispositivo GPS: Orientado al modelo YangDiana GT06N LTE A. Se debe investigar y decodificar su protocolo de comunicación TCP/UDP para la ingesta de datos.
+Backend API (Ingesta de Datos): FastAPI (Python) desplegado en Render.
+Justificación: Rendimiento extremo para I/O, validación de datos nativa con Pydantic, capacidades asíncronas para manejar miles de conexiones simultáneas de dispositivos, y auto-generación de documentación de API.
+Base de Datos Principal: Google Firestore.
+Justificación: Su capacidad de listeners en tiempo real es el núcleo de la experiencia del producto. Es serverless, escala masivamente y su modelo de seguridad se integra perfectamente con Firebase Authentication.
+Frontend: React (con Vite.js) desplegado en Vercel.
+Justificación: Ecosistema maduro, rendimiento excepcional, y una arquitectura basada en componentes ideal para una UI compleja. Vite proporciona una experiencia de desarrollo ultrarrápida. Vercel ofrece el mejor despliegue de su clase con CDN global.
+Autenticación y Autorización: Firebase Authentication.
+Justificación: Solución gestionada, segura y robusta que se integra nativamente con Firestore (para reglas de seguridad) y el frontend. Provee login/password, proveedores sociales y gestión de usuarios.
+API de Mapas: Mapbox GL JS.
+Justificación: Superior a Leaflet para aplicaciones de alto rendimiento. Utiliza renderizado por WebGL y teselas vectoriales, lo que permite una personalización de estilos de mapa muy avanzada, rotación, inclinación y un movimiento de marcadores mucho más fluido, crucial para nuestra experiencia "en vivo".
+API de Notificaciones: Twilio.
+Justificación: Estándar de la industria para la entrega fiable de alertas críticas vía SMS y/o WhatsApp.
+4. Arquitectura Detallada y Flujo de Datos:
+Endpoint de Ingesta (FastAPI):
+Crear un endpoint POST /track.
+Debe aceptar un payload JSON con, como mínimo: deviceId, timestamp, latitude, longitude, speed, heading, altitude, gpsSignalStrength.
+Usar Pydantic para validar rigurosamente cada campo (tipos de datos, rangos, etc.).
+Autenticar la petición (ej. mediante un API Key único por dispositivo/cliente).
+Escribir/actualizar de forma asíncrona el documento correspondiente en la colección vehicles de Firestore. La estructura del documento debe ser vehicles/{deviceId}.
+Adicionalmente, para el historial, cada paquete de datos válido se escribirá en una subcolección: vehicles/{deviceId}/history/{timestamp}.
+Estructura de Datos en Firestore:
+Colección users: Almacena perfiles de usuario, rol y a qué organización (organizationId) pertenecen.
+Colección organizations: Almacena la información de cada cliente SaaS.
+Colección vehicles:
+Cada documento es un deviceId.
+Campos: metadata (nombre, tipo, etc.), organizationId (para seguridad), y un objeto lastKnownLocation que contiene la última trama de datos recibida (lat, lng, speed, timestamp, etc.).
+Cliente Frontend (React):
+Implementar login con Firebase Authentication.
+Tras el login, obtener el organizationId del usuario.
+Establecer un listener de Firestore en la colección vehicles con una cláusula where("organizationId", "==", user.organizationId).
+Gestionar el estado de los vehículos en un store centralizado (ej. Zustand). Cuando el listener de Firestore emite un cambio, actualizar el store.
+Los componentes de React (mapa, lista) deben reaccionar a los cambios en el store para re-renderizarse eficientemente.
+5. Desglose de Funcionalidades (Features) y UI/UX:
+Implementar la interfaz de usuario basándose fielmente en el prototipo HTML/CSS proporcionado. La funcionalidad debe ser la siguiente:
+Módulo 1: Autenticación: Página de login segura. Flujo de "olvidé mi contraseña".
+Módulo 2: Dashboard Principal (Vista en Vivo):
+El mapa de Mapbox ocupa el área principal, con un estilo oscuro por defecto.
+La lista de vehículos en la barra lateral muestra vehicle-id, nombre, última ubicación y velocidad. Un indicador de estado visual (círculo de color) debe reflejar si está en movimiento, detenido o sin conexión.
+Al hacer clic en un vehículo de la lista, el mapa se centra suavemente (flyTo de Mapbox) en su ubicación y se resalta su marcador. El panel de información inferior se actualiza con los datos de ese vehículo.
+Filtros en la barra lateral para filtrar vehículos por estado o tipo.
+Módulo 3: Historial de Recorrido:
+Al seleccionar un vehículo, permitir al usuario elegir un rango de fechas.
+Obtener los datos de la subcolección history de Firestore para ese rango.
+Dibujar la polilínea del recorrido en el mapa.
+Implementar una función de "reproducción" que mueva un marcador a lo largo de la ruta con una barra de tiempo.
+Módulo 4: Geocercas:
+Herramienta de dibujo en el mapa (usando mapbox-gl-draw) para crear polígonos.
+Guardar estas geocercas en una colección geofences en Firestore.
+En el backend (o usando Cloud Functions), al recibir una nueva ubicación, verificar si el vehículo ha entrado o salido de una geocerca asociada y disparar una alerta.
+Módulo 5: Alertas y Reportes:
+Una sección para ver un historial de todas las alertas generadas (ej. "TRK-001 entró en Bodega Central").
+Funcionalidad para exportar el historial de un vehículo en un rango de fechas a CSV/PDF.
+6. Plan de Desarrollo por Fases (Milestones):
+Fase 0 (Setup): Configurar repositorios en Git, pipelines de CI/CD en Render y Vercel, e inicializar los proyectos de FastAPI y React.
+Fase 1 (El "Tracer Bullet"): El objetivo es enviar una trama de datos simulada (desde Postman o un script) al endpoint de FastAPI, verla guardada en Firestore y que un marcador aparezca en una página de React básica. Este es el hito más crítico.
+Fase 2 (UI y Autenticación): Construir el layout completo del frontend basado en el prototipo con datos estáticos. Integrar Firebase Authentication.
+Fase 3 (Integración Real-Time): Reemplazar los datos estáticos del frontend con el listener de Firestore. El dashboard ahora debe mostrar datos "en vivo".
+Fase 4 (Funcionalidades Avanzadas): Implementar el historial de recorrido, geocercas y sistema de alertas.
+Fase 5 (Preparación para Producción y SaaS): Implementar la lógica multi-tenant de forma robusta con reglas de seguridad de Firestore, añadir logging, monitorización y preparar la plataforma para la incorporación de nuevos clientes.
+7. Criterios de Aceptación Final ("Definition of Done"):
+El sistema maneja establemente la carga de 20 dispositivos enviando datos cada 10 segundos.
+La latencia desde el envío del dispositivo hasta la actualización en pantalla es inferior a 2 segundos.
+La interfaz de usuario es 100% funcional y responsiva según el prototipo.
+Las reglas de seguridad de Firestore garantizan que un usuario solo puede ver los vehículos de su propia organización.
+El código tiene una cobertura de pruebas unitarias superior al 80% para la lógica de negocio crítica (backend).
+FIN DE MASTER PROMPT

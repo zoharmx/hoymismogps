@@ -1,0 +1,107 @@
+{
+  "collections": {
+    "organizations": {
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "active"
+            },
+            {
+              "fieldPath": "createdAt"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "fieldPath": "subscription_plan"
+            }
+          ]
+        }
+      ]
+    },
+    "users": {
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "role"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "active"
+            }
+          ]
+        }
+      ]
+    },
+    "geofences": {
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "active"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "alerts_enabled"
+            }
+          ]
+        }
+      ]
+    },
+    "alerts": {
+      "indexes": [
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "timestamp"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "severity"
+            }
+          ]
+        },
+        {
+          "fields": [
+            {
+              "fieldPath": "organization_id"
+            },
+            {
+              "fieldPath": "acknowledged"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

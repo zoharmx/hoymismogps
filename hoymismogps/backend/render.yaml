@@ -1,0 +1,45 @@
+
+# Render configuration for HoyMismoGPS backend
+services:
+  - type: web
+    name: hoymismogps-backend
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:$PORT --timeout 120 --max-requests 1000 --access-logfile - --error-logfile -
+    healthCheckPath: /health
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: false
+      - key: USE_MOCK_FIREBASE
+        value: false
+      - key: ENABLE_SIMULATOR
+        value: false
+      - key: FIREBASE_PROJECT_ID
+        value: hoymismogps
+      - key: API_V1_STR
+        value: /api/v1
+      - key: PROJECT_NAME
+        value: HoyMismoGPS
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: LOG_LEVEL
+        value: INFO
+      - key: METRICS_ENABLED
+        value: true
+      - key: RATE_LIMIT_REQUESTS_PER_MINUTE
+        value: 100
+      - key: MAX_REQUESTS_PER_HOUR
+        value: 1000
+    # Sensitive environment variables (add these in Render dashboard):
+    # FIREBASE_PRIVATE_KEY - The full private key from service account JSON
+    # FIREBASE_CLIENT_EMAIL - Service account email
+    # SECRET_KEY - Application secret key
+    # ALLOWED_ORIGINS - Frontend URLs (https://hoymismogps.vercel.app,https://www.hoymismogps.com)
+    # DATABASE_URL - PostgreSQL connection string (if using database)
+    # REDIS_URL - Redis connection string (if using Redis)

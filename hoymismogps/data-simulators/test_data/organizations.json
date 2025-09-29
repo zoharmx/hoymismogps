@@ -1,0 +1,102 @@
+[
+  {
+    "id": "demo_hoymismogps",
+    "name": "HoyMismoGPS Demo",
+    "email": "demo@hoymismogps.com",
+    "phone": "+1-555-0123",
+    "address": "123 Demo Street, Demo City, CA 90210",
+    "subscription_plan": "premium",
+    "created_at": "2025-09-28T20:08:51.529107Z",
+    "settings": {
+      "timezone": "America/Los_Angeles",
+      "language": "es",
+      "notification_email": true,
+      "notification_sms": true,
+      "alert_threshold_speed": 100,
+      "alert_threshold_idle": 30,
+      "map_default_zoom": 13,
+      "data_retention_days": 365
+    },
+    "active": true
+  },
+  {
+    "id": "org_002_2f74814f",
+    "name": "Distribución Austin",
+    "email": "admin2@distribuciónaustin.com",
+    "phone": "+1-269-803-7554",
+    "address": "4820 Pine St, Austin, TX",
+    "subscription_plan": "premium",
+    "created_at": "2025-08-31T20:08:51.529141Z",
+    "settings": {
+      "timezone": "America/Los_Angeles",
+      "language": "en",
+      "notification_email": false,
+      "notification_sms": false,
+      "alert_threshold_speed": 107,
+      "alert_threshold_idle": 52,
+      "map_default_zoom": 12,
+      "data_retention_days": 730
+    },
+    "active": true
+  },
+  {
+    "id": "org_003_1464e89f",
+    "name": "Minería Austin",
+    "email": "admin3@mineríaaustin.com",
+    "phone": "+1-515-831-4426",
+    "address": "5586 Oak St, Austin, TX",
+    "subscription_plan": "premium",
+    "created_at": "2024-11-01T20:08:51.529166Z",
+    "settings": {
+      "timezone": "America/Los_Angeles",
+      "language": "en",
+      "notification_email": false,
+      "notification_sms": true,
+      "alert_threshold_speed": 93,
+      "alert_threshold_idle": 51,
+      "map_default_zoom": 11,
+      "data_retention_days": 365
+    },
+    "active": true
+  },
+  {
+    "id": "org_004_15e36098",
+    "name": "Construcción Guadalupe",
+    "email": "admin4@construcciónguadalupe.com",
+    "phone": "+1-226-920-6991",
+    "address": "7899 Oak St, Guadalupe, NL",
+    "subscription_plan": "enterprise",
+    "created_at": "2025-04-02T20:08:51.529180Z",
+    "settings": {
+      "timezone": "America/Denver",
+      "language": "es",
+      "notification_email": true,
+      "notification_sms": false,
+      "alert_threshold_speed": 81,
+      "alert_threshold_idle": 36,
+      "map_default_zoom": 14,
+      "data_retention_days": 730
+    },
+    "active": true
+  },
+  {
+    "id": "org_005_6a679b52",
+    "name": "Servicios de Entrega Houston",
+    "email": "admin5@serviciosdeentregahouston.com",
+    "phone": "+1-868-340-6372",
+    "address": "3979 Oak St, Houston, TX",
+    "subscription_plan": "enterprise",
+    "created_at": "2025-03-09T20:08:51.529193Z",
+    "settings": {
+      "timezone": "America/Chicago",
+      "language": "en",
+      "notification_email": false,
+      "notification_sms": true,
+      "alert_threshold_speed": 96,
+      "alert_threshold_idle": 58,
+      "map_default_zoom": 13,
+      "data_retention_days": 730
+    },
+    "active": true
+  }
+]

@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HoyMismoGPS - Plataforma de Seguimiento GPS en Tiempo Real</title>
+    <link rel="icon" type="image/png" href="https://assets.zyrosite.com/m6Lj5RMGlLT19eqJ/bfa13bcc-519c-4519-b1d3-ef1d4ed8d2bd-YBgjplnEr2uMkkG6.png">
+    <meta name="description" content="HoyMismoGPS - Plataforma avanzada de seguimiento GPS en tiempo real para flotas vehiculares">
+    <meta name="keywords" content="GPS, seguimiento, rastreo, flota, vehículos, tiempo real, HoyMismoGPS">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-right: 40px;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            filter: brightness(1.1) saturate(1.2);
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .logo img:hover {
+            filter: brightness(1.3) saturate(1.4);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #00FFFF;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+            background: linear-gradient(45deg, #00FFFF, #0066FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #333;
+            border-radius: 25px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #0066FF;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            margin-left: auto;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: rgba(0, 102, 255, 0.2);
+            border: 1px solid #0066FF;
+            border-radius: 8px;
+            color: #00FFFF;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 102, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+            border-right: 1px solid #333;
+            margin-top: 70px;
+            height: calc(100vh - 70px);
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #333;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: rgba(0, 102, 255, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 102, 255, 0.2);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #00FFFF;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .vehicle-filters {
+            padding: 24px;
+            border-bottom: 1px solid #333;
+        }
+
+        .filter-group {
+            margin-bottom: 16px;
+        }
+
+        .filter-label {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 8px;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .vehicle-list {
+            padding: 24px;
+        }
+
+        .vehicle-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .vehicle-item:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-color: #0066FF;
+            transform: translateX(5px);
+        }
+
+        .vehicle-item.active {
+            background: rgba(0, 255, 102, 0.1);
+            border-color: #00FF66;
+        }
+
+        .vehicle-status {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #00FF66;
+            box-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+        }
+
+        .vehicle-status.inactive {
+            background: #FF6600;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+        }
+
+        .vehicle-id {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .vehicle-info {
+            font-size: 12px;
+            color: #888;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .vehicle-speed {
+            color: #00FFFF;
+            font-weight: 500;
+        }
+
+        /* Map Container */
+        .map-container {
+            flex: 1;
+            position: relative;
+            margin-top: 70px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            background: #0a0a0a;
+        }
+
+        /* Map Controls */
+        .map-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        .map-control {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 12px;
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .map-control:hover {
+            background: rgba(0, 102, 255, 0.2);
+            border-color: #0066FF;
+        }
+
+        .layer-selector {
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 16px;
+            backdrop-filter: blur(20px);
+            min-width: 200px;
+        }
+
+        .layer-option {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .layer-option input {
+            margin-right: 10px;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: linear-gradient(135deg, #00FF66 0%, #00CC52 100%);
+            color: black;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 500;
+            box-shadow: 0 10px 30px rgba(0, 255, 102, 0.3);
+            animation: slideIn 0.5s ease-out;
+            z-index: 1001;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Bottom Info Panel */
+        .info-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 370px;
+            right: 20px;
+            background: rgba(26, 26, 26, 0.95);
+            border: 1px solid #333;
+            border-radius: 16px;
+            padding: 20px;
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #00FFFF;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 300px;
+                transform: translateX(-100%);
+            }
+            
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            
+            .info-panel {
+                left: 20px;
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0066FF;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00FFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="https://assets.zyrosite.com/m6Lj5RMGlLT19eqJ/bfa13bcc-519c-4519-b1d3-ef1d4ed8d2bd-YBgjplnEr2uMkkG6.png" alt="HoyMismoGPS Logo" />
+                <span class="logo-text">HoyMismoGPS</span>
+            </div>
+            <div class="search-bar">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" placeholder="Buscar vehículo, conductor o ubicación...">
+            </div>
+            <div class="header-controls">
+                <button class="control-btn">🌓 Tema</button>
+                <button class="control-btn">⚙️ Configuración</button>
+                <button class="control-btn">👤 Usuario</button>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">Dashboard HoyMismoGPS</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">247</div>
+                        <div class="stat-label">Vehículos Activos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">Conectividad</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">Alertas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">456km</div>
+                        <div class="stat-label">Recorrido Hoy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vehicle-filters">
+                <div class="filter-group">
+                    <div class="filter-label">Estado del Vehículo</div>
+                    <select class="filter-select">
+                        <option>Todos los vehículos</option>
+                        <option>En movimiento</option>
+                        <option>Estacionados</option>
+                        <option>Offline</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-label">Tipo de Vehículo</div>
+                    <select class="filter-select">
+                        <option>Todos los tipos</option>
+                        <option>Camiones</option>
+                        <option>Automóviles</option>
+                        <option>Motocicletas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="vehicle-list">
+                <div class="vehicle-item active">
+                    <div class="vehicle-status"></div>
+                    <div class="vehicle-id">TRK-001 "Express Alpha"</div>
+                    <div class="vehicle-info">
+                        📍 Av. Insurgentes, CDMX<br>
+                        <span class="vehicle-speed">🚀 65 km/h</span> • 🕐 Actualizado: 2s
+                    </div>
+                </div>
+
+                <div class="vehicle-item">
+                    <div class="vehicle-status"></div>
+                    <div class="vehicle-id">CAR-045 "Urban Beta"</div>
+                    <div class="vehicle-info">
+                        📍 Polanco, CDMX<br>
+                        <span class="vehicle-speed">🚀 0 km/h</span> • 🕐 Estacionado: 15min
+                    </div>
+                </div>
+
+                <div class="vehicle-item">
+                    <div class="vehicle-status inactive"></div>
+                    <div class="vehicle-id">MTR-078 "Speed Gamma"</div>
+                    <div class="vehicle-info">
+                        📍 Roma Norte, CDMX<br>
+                        <span class="vehicle-speed">⚠️ Sin señal</span> • 🕐 Última: 2h
+                    </div>
+                </div>
+
+                <div class="vehicle-item">
+                    <div class="vehicle-status"></div>
+                    <div class="vehicle-id">TRK-032 "Cargo Delta"</div>
+                    <div class="vehicle-info">
+                        📍 Aeropuerto CDMX<br>
+                        <span class="vehicle-speed">🚀 45 km/h</span> • 🕐 Actualizado: 1s
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Map Container -->
+        <main class="map-container">
+            <div id="map"></div>
+            
+            <!-- Map Controls -->
+            <div class="map-controls">
+                <div class="map-control" title="Centrar en mi ubicación">📍</div>
+                <div class="map-control" title="Pantalla completa">⛶</div>
+                <div class="layer-selector">
+                    <div class="layer-option">
+                        <input type="radio" name="layer" value="streets" checked>
+                        <span>🗺️ Calles</span>
+                    </div>
+                    <div class="layer-option">
+                        <input type="radio" name="layer" value="satellite">
+                        <span>🛰️ Satélite</span>
+                    </div>
+                    <div class="layer-option">
+                        <input type="radio" name="layer" value="terrain">
+                        <span>🏔️ Terreno</span>
+                    </div>
+                    <div class="layer-option">
+                        <input type="radio" name="layer" value="traffic">
+                        <span>🚦 Tráfico</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Notification -->
+        <div class="notification">
+            ✅ HoyMismoGPS: Vehículo TRK-001 ha llegado a su destino
+        </div>
+
+        <!-- Info Panel -->
+        <div class="info-panel">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-value">19.4326°N</div>
+                    <div class="info-label">Latitud</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">99.1332°W</div>
+                    <div class="info-label">Longitud</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">2,240m</div>
+                    <div class="info-label">Altitud</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">65 km/h</div>
+                    <div class="info-label">Velocidad</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">42°</div>
+                    <div class="info-label">Dirección (NE)</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-value">98%</div>
+                    <div class="info-label">Señal GPS</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script>
+        // Inicializar mapa con estilo oscuro
+        var map = L.map('map', {
+            zoomControl: false,
+            attributionControl: false
+        }).setView([19.4326, -99.1332], 13);
+
+        // Añadir capa base con estilo oscuro
+        var darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: ''
+        }).addTo(map);
+
+        // Crear iconos personalizados para vehículos
+        var vehicleIcon = L.divIcon({
+            className: 'vehicle-marker',
+            html: '<div style="background: #00FFFF; width: 20px; height: 20px; border-radius: 50%; border: 3px solid #0066FF; box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); animation: pulse 2s infinite;"></div>',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+        });
+
+        var inactiveVehicleIcon = L.divIcon({
+            className: 'vehicle-marker-inactive',
+            html: '<div style="background: #FF6600; width: 16px; height: 16px; border-radius: 50%; border: 2px solid #FF3300; opacity: 0.7;"></div>',
+            iconSize: [16, 16],
+            iconAnchor: [8, 8]
+        });
+
+        // Añadir marcadores de vehículos
+        var vehicles = [
+            { id: 'TRK-001', lat: 19.4326, lng: -99.1332, active: true, speed: 65 },
+            { id: 'CAR-045', lat: 19.4420, lng: -99.1402, active: true, speed: 0 },
+            { id: 'MTR-078', lat: 19.4186, lng: -99.1640, active: false, speed: 0 },
+            { id: 'TRK-032', lat: 19.4363, lng: -99.0721, active: true, speed: 45 }
+        ];
+
+        vehicles.forEach(function(vehicle) {
+            var icon = vehicle.active ? vehicleIcon : inactiveVehicleIcon;
+            var marker = L.marker([vehicle.lat, vehicle.lng], { icon: icon })
+                .bindPopup(`
+                    <div style="color: black; font-family: 'Inter', sans-serif;">
+                        <strong>${vehicle.id}</strong><br>
+                        🚀 ${vehicle.speed} km/h<br>
+                        📍 ${vehicle.lat.toFixed(4)}°, ${vehicle.lng.toFixed(4)}°<br>
+                        🕐 ${vehicle.active ? 'En línea' : 'Desconectado'}
+                    </div>
+                `)
+                .addTo(map);
+        });
+
+        // Añadir estilo de animación al CSS
+        var style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); opacity: 1; }
+                50% { transform: scale(1.2); opacity: 0.7; }
+                100% { transform: scale(1); opacity: 1; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Simular actualizaciones en tiempo real
+        setInterval(function() {
+            // Actualizar estadísticas simuladas
+            var activeCount = Math.floor(Math.random() * 10) + 240;
+            var connectivity = Math.floor(Math.random() * 5) + 95;
+            
+            document.querySelector('.stat-value').textContent = activeCount;
+            document.querySelectorAll('.stat-value')[1].textContent = connectivity + '%';
+        }, 5000);
+
+        // Funcionalidad interactiva
+        document.querySelectorAll('.vehicle-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.vehicle-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Simular centrado en vehículo
+                var randomLat = 19.4326 + (Math.random() - 0.5) * 0.1;
+                var randomLng = -99.1332 + (Math.random() - 0.5) * 0.1;
+                map.setView([randomLat, randomLng], 15);
+            });
+        });
+
+        // Auto-dismiss notification
+        setTimeout(function() {
+            var notification = document.querySelector('.notification');
+            if (notification) {
+                notification.style.transform = 'translateX(100%)';
+                notification.style.opacity = '0';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
