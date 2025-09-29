@@ -1,6 +1,27 @@
+# Backend sensitive files
 hoymismogps/backend/hoymismogps-firebase-adminsdk-fbsvc-9ab8f05471.json
+hoymismogps/backend/.env
+hoymismogps/backend/*.log
+
+# Python virtual environment
 venv/
-venv/
-venv/
+
+# Frontend
 hoymismogps/frontend/node_modules/
 hoymismogps/frontend/dist/
+hoymismogps/frontend/.env.local
+
+# Build files
+*.pyc
+__pycache__/
+.DS_Store
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Vercel
+.vercel
