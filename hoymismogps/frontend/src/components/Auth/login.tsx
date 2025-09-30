@@ -64,7 +64,7 @@ const Login = () => {
               <path fill="#FBBC05" d="M24 48c6.47 0 11.9-2.14 15.84-5.79l-7.98-6.19c-2.11 1.42-4.82 2.25-7.86 2.25-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
               <path fill="none" d="M0 0h48v48H0z"></path>
             </svg>
-            Iniciar sesión con Google
+            <span>Iniciar sesión con Google</span>
           </button>
 
           <p className="text-center text-xs text-gray-500 mt-8">
@@ -73,23 +73,6 @@ const Login = () => {
         </div>
       </div>
     </>
-  );
-};
-
-export default Login;
-
-  return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="p-8 bg-gray-800 rounded-lg shadow-lg text-center">
-        <h1 className="text-2xl font-bold mb-6">Iniciar Sesión en HoyMismoGPS</h1>
-        <button
-          onClick={handleGoogleSignIn}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
-        >
-          Entrar con Google
-        </button>
-      </div>
-    </div>
   );
 };
 
