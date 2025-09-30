@@ -11,7 +11,8 @@ function App() {
     const fetchVehicles = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8080/api/v1/vehicles', {
+        const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+        const response = await fetch(`${apiBaseUrl}/api/v1/vehicles`, {
           headers: {
             'X-API-Key': 'test_key_gps001'
           }
@@ -271,9 +272,9 @@ function App() {
           🚀 <strong>HoyMismoGPS</strong> - Plataforma SaaS de Rastreo GPS en Tiempo Real
         </div>
         <div style={{ fontSize: '12px', color: '#555' }}>
-          🔧 Backend: localhost:8080 | 🌐 Frontend: localhost:5173 | 
-          ⚡ Tiempo real con latencia &lt;2s | 
-          📡 6 ubicaciones de prueba activas
+          🔧 Backend: Conectado | 🌐 Frontend: Vercel |
+          ⚡ Tiempo real con latencia &lt;2s |
+          📡 Dispositivos GPS activos
         </div>
       </div>
     </div>
