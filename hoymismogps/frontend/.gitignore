@@ -1,1 +1,4 @@
 .vercel
+.firebase
+firebase-debug.log
+.firebase/
