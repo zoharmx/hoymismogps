@@ -1,5 +1,6 @@
-// ruta: hoymismogps/frontend/src/components/Auth/ProtectedRoute.tsx
+// src/components/Auth/ProtectedRoute.tsx
 
+import React from 'react'; // <--- ¡ESTA ES LA LÍNEA QUE FALTABA!
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../services/firebase';
 import { Navigate } from 'react-router-dom';
