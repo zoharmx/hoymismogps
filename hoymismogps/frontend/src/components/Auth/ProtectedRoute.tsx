@@ -1,12 +1,13 @@
 // src/components/Auth/ProtectedRoute.tsx
 
-import React from 'react'; // <--- ¡ESTA ES LA LÍNEA QUE FALTABA!
+import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../services/firebase';
 import { Navigate } from 'react-router-dom';
 
 interface ProtectedRouteProps {
-  children: JSX.Element;
+  // --- CAMBIO AQUÍ ---
+  children: React.ReactNode; 
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
@@ -20,7 +21,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/login" />;
   }
 
-  return children;
+  // Se necesita un pequeño ajuste aquí para que funcione con ReactNode
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
