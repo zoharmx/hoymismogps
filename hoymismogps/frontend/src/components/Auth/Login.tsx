@@ -1,13 +1,31 @@
 // ruta: hoymismogps/frontend/src/components/Auth/Login.tsx
-
+import { useEffect } from 'react';
 import { auth } from '../../services/firebase';
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, signInWithRedirect, getRedirectResult } from "firebase/auth";
 
 const Login = () => {
+  // Manejar el resultado del redirect cuando el usuario regresa
+  useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          console.log("Usuario autenticado:", result.user);
+          // El ProtectedRoute redirigirá automáticamente al dashboard
+        }
+      } catch (error) {
+        console.error("Error durante la autenticación:", error);
+      }
+    };
+    
+    handleRedirectResult();
+  }, []);
+
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      // signInWithRedirect funciona en todos los navegadores y plataformas
+      await signInWithRedirect(auth, provider);
     } catch (error) {
       console.error("Error durante el inicio de sesión con Google:", error);
     }
