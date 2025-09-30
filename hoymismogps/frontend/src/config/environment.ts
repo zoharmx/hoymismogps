@@ -11,6 +11,7 @@ export const environment = {
   FIREBASE: {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyDJBIASAEKY6nZRYC2OekMQwtNIn4sW108',
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'hoymismogps.firebaseapp.com',
+    databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL || 'https://hoymismogps-default-rtdb.firebaseio.com',
     projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'hoymismogps',
     storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'hoymismogps.firebasestorage.app',
     messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '1098450733119',

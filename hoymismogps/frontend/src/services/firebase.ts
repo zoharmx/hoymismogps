@@ -2,7 +2,7 @@
 // Firebase client configuration for HoyMismoGPS
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from 'firebase/auth';
-import { getFirestore, collection, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import { getDatabase, ref, onValue, query, orderByChild, equalTo } from 'firebase/database';
 
 import { environment } from '../config/environment';
 
@@ -11,7 +11,7 @@ const firebaseConfig = environment.FIREBASE;
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app);
+export const db = getDatabase(app);
 
 // Auth functions
 export const loginUser = (email: string, password: string) => {
@@ -26,34 +26,37 @@ export const onAuthChange = (callback: (user: User | null) => void) => {
   return onAuthStateChanged(auth, callback);
 };
 
-// Firestore real-time listeners
+// Realtime Database listeners
 export const subscribeToVehicles = (organizationId: string, callback: (vehicles: Record<string, unknown>[]) => void) => {
-  const q = query(
-    collection(db, 'vehicles'),
-    where('organizationId', '==', organizationId)
-  );
-  
-  return onSnapshot(q, (snapshot) => {
-    const vehicles = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+  const vehiclesRef = ref(db, 'vehicles');
+  const q = query(vehiclesRef, orderByChild('organizationId'), equalTo(organizationId));
+
+  return onValue(q, (snapshot) => {
+    const vehicles: Record<string, unknown>[] = [];
+    snapshot.forEach((childSnapshot) => {
+      vehicles.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
     callback(vehicles);
   });
 };
 
 export const subscribeToAlerts = (organizationId: string, callback: (alerts: Record<string, unknown>[]) => void) => {
-  const q = query(
-    collection(db, 'alerts'),
-    where('organizationId', '==', organizationId),
-    orderBy('createdAt', 'desc')
-  );
-  
-  return onSnapshot(q, (snapshot) => {
-    const alerts = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }));
+  const alertsRef = ref(db, 'alerts');
+  const q = query(alertsRef, orderByChild('organizationId'), equalTo(organizationId));
+
+  return onValue(q, (snapshot) => {
+    const alerts: Record<string, unknown>[] = [];
+    snapshot.forEach((childSnapshot) => {
+      alerts.push({
+        id: childSnapshot.key,
+        ...childSnapshot.val()
+      });
+    });
+    // Sort by createdAt descending
+    alerts.sort((a: any, b: any) => (b.createdAt || 0) - (a.createdAt || 0));
     callback(alerts);
   });
 };
