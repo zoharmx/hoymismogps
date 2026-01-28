@@ -11,6 +11,7 @@ const Header: React.FC = () => {
         <img 
           src="https://assets.zyrosite.com/m6Lj5RMGlLT19eqJ/bfa13bcc-519c-4519-b1d3-ef1d4ed8d2bd-YBgjplnEr2uMkkG6.png"
           alt="HoyMismoGPS Logo"
+          style={{ height: '44px' }}
           className="h-11 w-auto filter brightness-110 saturate-120 rounded-lg shadow-lg shadow-primary/20 transition-all duration-300 hover:brightness-130 hover:saturate-140 hover:scale-105"
         />
         <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">

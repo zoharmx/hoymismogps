@@ -8,6 +8,7 @@ import { auth } from './services/firebase';
 import Dashboard from './components/Dashboard/Dashboard'; // Importa el nuevo componente
 import Login from './components/Auth/Login'; // Asegúrate que este archivo exista
 import ProtectedRoute from './components/Auth/ProtectedRoute'; // Y este también
+import ReportsPage from './components/Reports/ReportsPage';
 
 import './App.css';
 
@@ -33,6 +34,14 @@ function App() {
               <Dashboard />
             </ProtectedRoute>
           } 
+        />
+        <Route
+          path="/reports"
+          element={
+            <ProtectedRoute>
+              <ReportsPage />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </Router>
