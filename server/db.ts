@@ -1,6 +1,21 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { 
+  InsertUser, 
+  users, 
+  birthCharts, 
+  InsertBirthChart, 
+  BirthChart,
+  mazalAnalyses,
+  InsertMazalAnalysis,
+  MazalAnalysis,
+  reports,
+  InsertReport,
+  Report,
+  compatibilityAnalyses,
+  InsertCompatibilityAnalysis,
+  CompatibilityAnalysis
+} from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +104,147 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// ============================================================================
+// Birth Charts
+// ============================================================================
+
+export async function createBirthChart(chart: InsertBirthChart): Promise<BirthChart> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(birthCharts).values(chart);
+  const insertedId = Number(result[0].insertId);
+  
+  const inserted = await db.select().from(birthCharts).where(eq(birthCharts.id, insertedId)).limit(1);
+  return inserted[0]!;
+}
+
+export async function getBirthChartById(id: number): Promise<BirthChart | undefined> {
+  const db = await getDb();
+  if (!db) {
+    return undefined;
+  }
+
+  const result = await db.select().from(birthCharts).where(eq(birthCharts.id, id)).limit(1);
+  return result[0];
+}
+
+export async function getBirthChartsByUserId(userId: number): Promise<BirthChart[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  return db.select().from(birthCharts).where(eq(birthCharts.userId, userId)).orderBy(desc(birthCharts.createdAt));
+}
+
+export async function updateBirthChart(id: number, updates: Partial<InsertBirthChart>): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.update(birthCharts).set(updates).where(eq(birthCharts.id, id));
+}
+
+export async function deleteBirthChart(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  await db.delete(birthCharts).where(eq(birthCharts.id, id));
+}
+
+// ============================================================================
+// Mazal Analyses
+// ============================================================================
+
+export async function createMazalAnalysis(analysis: InsertMazalAnalysis): Promise<MazalAnalysis> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(mazalAnalyses).values(analysis);
+  const insertedId = Number(result[0].insertId);
+  
+  const inserted = await db.select().from(mazalAnalyses).where(eq(mazalAnalyses.id, insertedId)).limit(1);
+  return inserted[0]!;
+}
+
+export async function getMazalAnalysisByChartId(chartId: number): Promise<MazalAnalysis | undefined> {
+  const db = await getDb();
+  if (!db) {
+    return undefined;
+  }
+
+  const result = await db.select().from(mazalAnalyses).where(eq(mazalAnalyses.birthChartId, chartId)).limit(1);
+  return result[0];
+}
+
+// ============================================================================
+// Reports
+// ============================================================================
+
+export async function createReport(report: InsertReport): Promise<Report> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(reports).values(report);
+  const insertedId = Number(result[0].insertId);
+  
+  const inserted = await db.select().from(reports).where(eq(reports.id, insertedId)).limit(1);
+  return inserted[0]!;
+}
+
+export async function getReportsByUserId(userId: number): Promise<Report[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  return db.select().from(reports).where(eq(reports.userId, userId)).orderBy(desc(reports.generatedAt));
+}
+
+export async function incrementReportDownloadCount(id: number): Promise<void> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const report = await db.select().from(reports).where(eq(reports.id, id)).limit(1);
+  if (report[0]) {
+    await db.update(reports).set({ downloadCount: (report[0].downloadCount || 0) + 1 }).where(eq(reports.id, id));
+  }
+}
+
+// ============================================================================
+// Compatibility Analyses
+// ============================================================================
+
+export async function createCompatibilityAnalysis(analysis: InsertCompatibilityAnalysis): Promise<CompatibilityAnalysis> {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+
+  const result = await db.insert(compatibilityAnalyses).values(analysis);
+  const insertedId = Number(result[0].insertId);
+  
+  const inserted = await db.select().from(compatibilityAnalyses).where(eq(compatibilityAnalyses.id, insertedId)).limit(1);
+  return inserted[0]!;
+}
+
+export async function getCompatibilityAnalysesByUserId(userId: number): Promise<CompatibilityAnalysis[]> {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+
+  return db.select().from(compatibilityAnalyses).where(eq(compatibilityAnalyses.userId, userId)).orderBy(desc(compatibilityAnalyses.createdAt));
+}
