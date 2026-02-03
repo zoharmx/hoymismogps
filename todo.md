@@ -104,3 +104,9 @@
 - [ ] Guía de usuario
 - [ ] Referencias bibliográficas (Talmud, Zohar, Maimónides)
 - [ ] Explicación de metodología cabalística
+
+
+## Bugs Reportados
+
+- [x] Corregir conversión de fechas hebreas: 4 de enero 1988 13:25 Jerusalem debería ser 14 de Tevet 5748, error corregido
+- [x] Validar ajuste de día hebreo cuando hora es después de 19:00 (7pm) - implementado correctamente

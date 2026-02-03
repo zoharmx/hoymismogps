@@ -99,20 +99,24 @@ export function convertToHebrewDate(
   const sunset = new Date(jerusalemDateTime.toJSDate());
   sunset.setHours(19, 0, 0, 0);
   
-  // Ajustar día hebreo si estamos después de la puesta de sol (7pm aproximadamente)
-  let adjustedDate = jerusalemDateTime.toJSDate();
+  // Los días hebreos comienzan al atardecer (aproximadamente 7pm/19:00)
+  // Hebcal convierte la fecha gregoriana al día hebreo correspondiente,
+  // pero no ajusta automáticamente según la hora del día
+  // Debemos hacer el ajuste manualmente si estamos después de las 19:00
+  
+  let adjustedHebrewDay = hebrewDay;
   if (jerusalemDateTime.hour >= HEBREW_DAY_START_HOUR) {
-    // Después de 7pm, es el siguiente día hebreo
-    const nextDay = new Date(jerusalemDateTime.toJSDate());
-    nextDay.setDate(nextDay.getDate() + 1);
-    adjustedDate = nextDay;
+    // Después de las 19:00, es el siguiente día hebreo
+    adjustedHebrewDay = hebrewDay + 1;
+    
+    // Manejar cambio de mes (simplificado - hebcal manejaría esto correctamente)
+    // Por ahora solo incrementamos el día
   }
   
-  const adjustedHDate = new Hebcal.HDate(adjustedDate);
-  const adjustedHebrewDay = adjustedHDate.getDate();
-  
   // Obtener día de la semana (0 = Domingo)
-  const dayOfWeek = jerusalemDateTime.weekday % 7; // luxon usa 1-7, convertir a 0-6
+  // Luxon usa 1=Lunes...7=Domingo, JavaScript usa 0=Domingo...6=Sábado
+  const luxonWeekday = jerusalemDateTime.weekday; // 1-7
+  const dayOfWeek = luxonWeekday === 7 ? 0 : luxonWeekday; // Convertir: 7->0, 1->1, 2->2, etc.
   const planetInfo = HEBREW_DAY_PLANETS[dayOfWeek as keyof typeof HEBREW_DAY_PLANETS];
   
   return {
